@@ -2,11 +2,11 @@ import json
 import pymysql
 
 def extract_values(obj, key):
-    """Pull all values of specified key from nested JSON."""
+    """find all the keys in the json."""
     arr = []
 
     def extract(obj, arr, key):
-        """Recursively search for values of key in JSON tree."""
+        """Recursively search the JSON tree."""
         if isinstance(obj, dict):
             for k, v in obj.items():
                 if isinstance(v, (dict, list)):
@@ -32,13 +32,11 @@ def form_new_json(data):
     contact = extract_values(data, 'contact')
     source = extract_values(data, 'source')
     
-    con = pymysql.connect(host = '127.0.0.1',user = 'root',passwd = 'Muluken!2nega',db = 'tomercato',port =3306)
-    cursor = con.cursor()
+    con = pymysql.connect(host = '127.0.0.1',user = 'root',passwd = '',db = 'tomercato',port =3306)
+    cursor = con.cursor("DROP TABLE IF EXISTS b_info;")
+    cursor.execute("CREATE TABLE IF NOT EXISTS b_info (company varchar(2000) , sector varchar(2000) ,description longtext, contact text, source text);")
     for i in range(len(company)):
-        #rec = "{" + "company:'" + company[i] + "',sector:'" + sector[i] + "',description:'" + description[i] + "',contact:'" + contact[i] + "',source:'" + source[i]+ "'}"
-        #rec = "{" + "company:" + company[i] + ",sector:" + sector[i] + ",description:" + description[i] + ",contact:" + contact[i] + ",source:" + source[i]+ "}"
-        #record = eval(rec)
-        #row = json.dumps(rec)
+        
        comp=company[i]
        sect=sector[i]
        desc=description[i]
@@ -59,11 +57,5 @@ def form_new_json(data):
    
 f = open('TwoMercato.json',)
 data = json.load(f)
-
-#names = extract_values(data, 'source')
-
-#print(len(names))
-#print(names[0])
-
 all_json = form_new_json(data)
 #print(all_json[4741])
