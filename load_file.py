@@ -33,7 +33,8 @@ def form_new_json(data):
     source = extract_values(data, 'source')
     
     con = pymysql.connect(host = '127.0.0.1',user = 'root',passwd = '',db = 'tomercato',port =3306)
-    cursor = con.cursor("DROP TABLE IF EXISTS b_info;")
+    cursor = con.cursor()
+    cursor.execute("DROP TABLE IF EXISTS b_info;")
     cursor.execute("CREATE TABLE IF NOT EXISTS b_info (company varchar(2000) , sector varchar(2000) ,description longtext, contact text, source text);")
     for i in range(len(company)):
         
